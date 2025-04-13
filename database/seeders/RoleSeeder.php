@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use App\Models\Permission;
@@ -13,17 +14,23 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->seedSuperAdmin();
-        $this->seedManager();
+        for ($i = 0; $i < 1000; $i++) {
+            Role::create([
+                'name' => 'role-' . \Str::random(),
+                'title' => 'Hello'
+            ]);
+        }
+        // $this->seedSuperAdmin();
+        // $this->seedManager();
     }
 
     public function seedSuperAdmin(): void
     {
         $permissionIds = Permission::pluck('id')->toArray();
 
-        $superAdminRole = Role::where('name', 'super-admin')->firstOrNew();
-        $superAdminRole->name = 'super-admin';
-        $superAdminRole->title = 'Super Admin';
+        $superAdminRole = Role::where('name', RoleEnum::SUPER_ADMIN->value)->firstOrNew();
+        $superAdminRole->name = RoleEnum::SUPER_ADMIN->value;
+        $superAdminRole->title = RoleEnum::SUPER_ADMIN->title();
         $superAdminRole->save();
 
         $superAdminRole->syncPermissions($permissionIds);
@@ -31,9 +38,9 @@ class RoleSeeder extends Seeder
 
     public function seedManager(): void
     {
-        $managerRole = Role::where('name', 'manager')->firstOrNew();
-        $managerRole->name = 'manager';
-        $managerRole->title = 'Manager';
+        $managerRole = Role::where('name', RoleEnum::MANAGER->value)->firstOrNew();
+        $managerRole->name = RoleEnum::MANAGER->value;
+        $managerRole->title = RoleEnum::MANAGER->title();
         $managerRole->save();
 
         $managerRole->givePermissionTo([

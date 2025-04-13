@@ -9,6 +9,6 @@ class RoleService
 {
     public function getAllRoles()
     {
-        return Role::withCount('permissions')->paginate(5);
+        return Role::withCount('permissions')->paginate(10);
     }
 }

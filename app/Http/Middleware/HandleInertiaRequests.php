@@ -52,11 +52,14 @@ class HandleInertiaRequests extends Middleware
                     'permissions' => $request->user()->getPermissionNames(),
                 ] : null,
             ],
-            'ziggy' => fn (): array => [
+            'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                'alert' => session('alert')
+            ]
         ];
     }
 }
