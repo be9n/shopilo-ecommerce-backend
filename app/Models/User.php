@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -46,14 +47,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
-    /**
-     * Get array of permission names for this user
-     *
-     * @return array
-     */
-    public function getPermissionNames(): array
+
+    public function getJWTIdentifier()
     {
-        return $this->getAllPermissions()->pluck('name')->toArray();
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
