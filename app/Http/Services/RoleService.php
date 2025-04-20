@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class RoleService
 {
-    public function getAllRoles(?string $sortBy, ?string $sortDir, ?string $search)
+    public function getAllRoles(?string $sortBy = null, ?string $sortDir = null, ?string $search = null)
     {
         return Role::withCount('permissions')
             ->when($sortBy, function (Builder $builder) use ($sortBy, $sortDir) {

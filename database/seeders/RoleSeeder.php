@@ -14,14 +14,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 1000; $i++) {
-            Role::create([
-                'name' => 'role-' . \Str::random(),
-                'title' => 'Hello'
-            ]);
-        }
-        // $this->seedSuperAdmin();
-        // $this->seedManager();
+        $this->seedSuperAdmin();
+        $this->seedManager();
     }
 
     public function seedSuperAdmin(): void

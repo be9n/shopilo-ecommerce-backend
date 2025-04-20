@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\Api\Auth\AuthController;
+use App\Http\Controllers\Admin\Api\CategoryController;
+use App\Http\Controllers\Admin\Api\ProductController;
 use App\Http\Controllers\Admin\Api\RoleController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -12,4 +14,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('roles', RoleController::class);
+
+    Route::apiResource('products', ProductController::class);
+
+    Route::get('categories_list', [CategoryController::class, 'categoriesList']);
 });

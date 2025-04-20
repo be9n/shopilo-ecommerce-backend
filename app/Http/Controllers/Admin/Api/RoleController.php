@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\Admin\Api\BaseApiController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Web\Admin\Roles\RoleResource;
+use App\Http\Resources\Api\Admin\Roles\RoleResource;
 use App\Http\Services\RoleService;
 
 class RoleController extends BaseApiController
