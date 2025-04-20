@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(125);
 
-        JsonResource::withoutWrapping();
+        // JsonResource::withoutWrapping();
 
         RedirectResponse::macro('withAlert', function ($message, $type = 'success') {
             return $this->with('alert', [

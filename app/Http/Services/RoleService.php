@@ -3,12 +3,20 @@
 namespace App\Http\Services;
 
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class RoleService
 {
-    public function getAllRoles()
+    public function getAllRoles(?string $sortBy, ?string $sortDir, ?string $search)
     {
-        return Role::withCount('permissions')->paginate(10);
+        return Role::withCount('permissions')
+            ->when($sortBy, function (Builder $builder) use ($sortBy, $sortDir) {
+                return $builder->orderBy($sortBy, $sortDir ?? 'asc');
+            })
+            ->when($search, function (Builder $builder) use ($search) {
+                return $builder->where('title', 'like', "%$search%");
+            })
+            ->paginate(10);
     }
 }
