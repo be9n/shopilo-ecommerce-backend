@@ -23,6 +23,11 @@ class ProductService
             ->paginate(15);
     }
 
+    public function createProduct($data)
+    {
+        return Product::create($data);
+    }
+
     public function deleteProduct(Product $product)
     {
         return $product->delete();

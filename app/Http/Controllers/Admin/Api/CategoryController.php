@@ -13,12 +13,15 @@ class CategoryController extends BaseApiController
 
     public function categoriesList()
     {
+        $parent = request('parent', false);
+        $withChildren = request('with_children', false);
+
         return $this->successResponse(
             'Processed successfully',
             [
                 'categories' => $this->getPaginatedData(
                     CategoryResource::collection(
-                        $this->categoryService->getCategoriesList()
+                        $this->categoryService->getCategoriesList($parent, $withChildren)
                     )
                 )
             ]

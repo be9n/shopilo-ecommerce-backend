@@ -17,12 +17,12 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $categoryIds = Category::pluck('id')->toArray();
+        $randomCategoryId = Category::child()->inRandomOrder()->first();
 
         return [
             'name' => fake()->name(),
             'price' => fake()->randomFloat(2, 10, 9999),
-            'category_id' => fake()->randomElement($categoryIds)
+            'category_id' => $randomCategoryId
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Api;
 
+use App\Http\Requests\Api\Products\ProductCreateRequest;
 use App\Http\Resources\Api\Admin\Products\ProductResource;
 use App\Http\Services\ProductService;
 use App\Models\Product;
@@ -29,6 +30,15 @@ class ProductController extends BaseApiController
                 )
             ]
         );
+    }
+
+    public function store(ProductCreateRequest $request)
+    {
+        $validated = $request->validated();
+
+        $this->productService->createProduct($validated);
+
+        return $this->successResponse('Product created successfully');
     }
 
     public function destroy(Product $product)

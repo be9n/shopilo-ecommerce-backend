@@ -13,6 +13,10 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'children' => $this->when(
+                $this->relationLoaded('children'), // Check if children were eager-loaded
+                fn() => CategoryResource::collection($this->children)
+            )
         ];
     }
 }
