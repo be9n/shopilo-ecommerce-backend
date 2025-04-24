@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading();
         Schema::defaultStringLength(125);
 
-        // JsonResource::withoutWrapping();
+        JsonResource::withoutWrapping();
 
         RedirectResponse::macro('withAlert', function ($message, $type = 'success') {
             return $this->with('alert', [

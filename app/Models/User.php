@@ -57,4 +57,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    // For spatie permissions
+    protected function getDefaultGuardName(): string
+    {
+        return 'web';
+    }
 }

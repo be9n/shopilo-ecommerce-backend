@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Api\Auth\AuthController;
 use App\Http\Controllers\Admin\Api\CategoryController;
+use App\Http\Controllers\Admin\Api\PermissionController;
 use App\Http\Controllers\Admin\Api\ProductController;
 use App\Http\Controllers\Admin\Api\RoleController;
 
@@ -18,4 +19,5 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('products', ProductController::class);
 
     Route::get('categories_list', [CategoryController::class, 'categoriesList']);
+    Route::get('permissions_list', [PermissionController::class, 'permissionsList']);
 });

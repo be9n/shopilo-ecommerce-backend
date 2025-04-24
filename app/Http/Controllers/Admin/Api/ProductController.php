@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Requests\Api\Products\ProductCreateRequest;
+use App\Http\Requests\Api\Products\ProductUpdateRequest;
+use App\Http\Resources\Api\Admin\Products\DetailedProductResource;
 use App\Http\Resources\Api\Admin\Products\ProductResource;
 use App\Http\Services\ProductService;
 use App\Models\Product;
@@ -32,6 +34,19 @@ class ProductController extends BaseApiController
         );
     }
 
+    public function show(Product $product)
+    {
+        return $this->successResponse(
+            'Processed successfully',
+            [
+                'product' =>
+                    DetailedProductResource::make(
+                        $product->load('category.parent')
+                    )
+            ]
+        );
+    }
+
     public function store(ProductCreateRequest $request)
     {
         $validated = $request->validated();
@@ -39,6 +54,15 @@ class ProductController extends BaseApiController
         $this->productService->createProduct($validated);
 
         return $this->successResponse('Product created successfully');
+    }
+
+    public function update(ProductUpdateRequest $request, Product $product)
+    {
+        $validated = $request->validated();
+
+        $this->productService->updateProduct($product, $validated);
+
+        return $this->successResponse('Product updated successfully');
     }
 
     public function destroy(Product $product)
