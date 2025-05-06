@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\Products;
 
+use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,10 +23,16 @@ class ProductUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['required', 'string', 'max:125'],
+        $rules = [
+            'name' => ['required', 'array'],
             'price' => ['required', 'numeric', 'between:1,9999.99'],
             'category_id' => ['required', Rule::exists('categories', 'id')->whereNotNull('parent_id')]
         ];
+
+        foreach (config('app.locales') as $locale) {
+            $rules["name.$locale"] = ['required', 'string', 'max:255', UniqueTranslationRule::for('products', 'name')->ignore($this->product->id)];
+        }
+
+        return $rules;
     }
 }

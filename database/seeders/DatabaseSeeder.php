@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder2::class,
             RoleSeeder::class,
             // CategorySeeder::class,
-            // ProductSeeder::class,
+            ProductSeeder::class,
         ]);
 
         $admin = User::firstWhere('email', 'super-admin@gmail.com');

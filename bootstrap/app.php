@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SetLocaleMiddleware;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
@@ -27,6 +28,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+        ]);
+
+        $middleware->api(append: [
+            SetLocaleMiddleware::class,
         ]);
 
         $middleware->alias([
@@ -99,7 +104,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         'message' => __('Sorry, Something went wrong, try again later!'),
                         'success' => false,
                         'data' => null,
-                        'errors' => $exception->getMessage(),
+                    'errors' => $exception->getMessage(),
                         'trace' => request()->ip() == '127.0.0.1' ? $exception->getTrace() : null,
                     ],
                     Response::HTTP_INTERNAL_SERVER_ERROR
