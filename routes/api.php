@@ -14,7 +14,13 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('me', [AuthController::class, 'me']);
     Route::get('logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('roles', RoleController::class);
+    Route::controller(RoleController::class)->group(function () {
+        Route::get('roles', 'index')->middleware('permission:user_management.roles.view_all');
+        Route::get('roles/{role}', 'show')->middleware('permission:user_management.roles.view');
+        Route::post('roles', 'store')->middleware('permission:user_management.roles.create');
+        Route::put('roles/{role}', 'update')->middleware('permission:user_management.roles.edit');
+        Route::delete('roles/{role}', 'destroy')->middleware('permission:user_management.roles.delete');
+    });
 
     Route::apiResource('products', ProductController::class);
 

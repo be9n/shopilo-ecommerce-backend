@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder2::class,
             RoleSeeder::class,
-            CategorySeeder::class,
-            ProductSeeder::class,
+            // CategorySeeder::class,
+            // ProductSeeder::class,
         ]);
 
         $admin = User::firstWhere('email', 'super-admin@gmail.com');

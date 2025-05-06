@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Api\Auth;
 use App\Http\Controllers\Admin\Api\BaseApiController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\Api\Admin\Auth\UserResourceWithPermissions;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -58,8 +59,9 @@ class AuthController extends BaseApiController
 
     public function me()
     {
+        $user = auth()->user();
         return $this->successResponse("Successfully Processed", [
-            'user' => auth()->user()
+            'user' => UserResourceWithPermissions::make($user->load('roles.permissions')),
         ]);
     }
 

@@ -8,6 +8,7 @@ use App\Http\Resources\Api\Admin\Products\DetailedProductResource;
 use App\Http\Resources\Api\Admin\Products\ProductResource;
 use App\Http\Services\ProductService;
 use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends BaseApiController
 {
