@@ -14,12 +14,14 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'price',
-        'category_id'
+        'category_id',
     ];
 
     public array $translatable = [
         'name',
+        'description'
     ];
 
     public function category()

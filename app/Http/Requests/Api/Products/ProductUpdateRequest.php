@@ -25,12 +25,14 @@ class ProductUpdateRequest extends FormRequest
     {
         $rules = [
             'name' => ['required', 'array'],
+            'description' => ['nullable', 'array'],
             'price' => ['required', 'numeric', 'between:1,9999.99'],
             'category_id' => ['required', Rule::exists('categories', 'id')->whereNotNull('parent_id')]
         ];
 
         foreach (config('app.locales') as $locale) {
-            $rules["name.$locale"] = ['required', 'string', 'max:255', UniqueTranslationRule::for('products', 'name')->ignore($this->product->id)];
+            $rules["name.$locale"] = ['required', 'string', 'max:125', UniqueTranslationRule::for('products', 'name')->ignore($this->product->id)];
+            $rules["description.$locale"] = ['nullable', 'string', 'max:255'];
         }
 
         return $rules;
