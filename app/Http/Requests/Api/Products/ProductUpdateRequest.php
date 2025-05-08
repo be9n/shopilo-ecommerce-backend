@@ -25,6 +25,8 @@ class ProductUpdateRequest extends FormRequest
     {
         $rules = [
             'name' => ['required', 'array'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'description' => ['nullable', 'array'],
             'price' => ['required', 'numeric', 'between:1,9999.99'],
             'category_id' => ['required', Rule::exists('categories', 'id')->whereNotNull('parent_id')]

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\Admin\Products;
 
+use App\Http\Resources\Api\Admin\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class DetailedProductResource extends JsonResource
             'id' => $this->id,
             'name' => $name,
             'description' => $description,
+            'images' => $this->getMedia('images')->isNotEmpty() ? MediaResource::collection($this->getMedia('images')) : null,
             'price' => (float) $this->price,
             'category_id' => $this->category_id,
             'parent_category_id' => $this->category?->parent?->id,

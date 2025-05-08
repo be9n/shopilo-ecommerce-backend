@@ -41,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (Exception $exception) {
+        $exceptions->render(function (Throwable|Exception $exception) {
             if ($exception instanceof NotFoundHttpException) {
                 return response()->json(
                     [
@@ -104,7 +104,7 @@ return Application::configure(basePath: dirname(__DIR__))
                         'message' => __('Sorry, Something went wrong, try again later!'),
                         'success' => false,
                         'data' => null,
-                    'errors' => $exception->getMessage(),
+                        'errors' => request()->ip() == '127.0.0.1' ? $exception->getMessage() : null,
                         'trace' => request()->ip() == '127.0.0.1' ? $exception->getTrace() : null,
                     ],
                     Response::HTTP_INTERNAL_SERVER_ERROR

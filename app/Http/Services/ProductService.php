@@ -25,12 +25,21 @@ class ProductService
 
     public function createProduct($data)
     {
-        return Product::create($data);
+        $product = Product::create($data);
+        if (isset($data['images'])) {
+            $product->storeMultipleFiles($data['images'], 'images');
+        }
+
+        return $product;
     }
 
     public function updateProduct($product, $data)
     {
         $product->update($data);
+        if (isset($data['images'])) {
+            $product->storeMultipleFiles($data['images'], 'images');
+        }
+
         return $product;
     }
 
