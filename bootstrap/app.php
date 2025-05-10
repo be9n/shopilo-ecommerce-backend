@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\CanBeDeletedException;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetLocaleMiddleware;
@@ -96,6 +97,17 @@ return Application::configure(basePath: dirname(__DIR__))
                         'errors' => null
                     ],
                     Response::HTTP_FORBIDDEN
+                );
+            } elseif ($exception instanceof CanBeDeletedException) {
+                return response(
+                    [
+                        'success' => false,
+                        'code' => Response::HTTP_BAD_REQUEST,
+                        'message' => __('This item cannot be deleted!'),
+                        'data' => null,
+                        'errors' => null
+                    ],
+                    Response::HTTP_BAD_REQUEST
                 );
             } else {
                 return response()->json(

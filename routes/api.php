@@ -25,7 +25,9 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('products', ProductController::class);
 
+    Route::apiResource('categories', CategoryController::class);
     Route::get('categories_list', [CategoryController::class, 'categoriesList']);
+    
     Route::get('permissions_list', [PermissionController::class, 'permissionsList']);
 
     Route::delete('files/{media}', [FileController::class, 'destroy']);

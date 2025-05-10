@@ -5,7 +5,7 @@ namespace App\Http\Resources\Api\Admin\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class CategoryListResource extends JsonResource
 {
 
     public function toArray(Request $request): array
@@ -13,8 +13,10 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'parent_category_name' => $this->parent?->name,
-            'products_count' => $this->products_count,
+            'children' => $this->when(
+                $this->relationLoaded('children'), // Check if children were eager-loaded
+                fn() => CategoryListResource::collection($this->children)
+            )
         ];
     }
 }
