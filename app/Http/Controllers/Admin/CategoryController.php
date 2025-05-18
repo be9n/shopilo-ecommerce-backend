@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Api\Categories\CategoryCreateRequest;
-use App\Http\Requests\Api\Categories\CategoryUpdateRequest;
-use App\Http\Resources\Api\Admin\Categories\CategoryListResource;
-use App\Http\Resources\Api\Admin\Categories\CategoryResource;
-use App\Http\Resources\Api\Admin\Categories\EditCategoryResource;
-use App\Http\Services\CategoryService;
+use App\Http\Requests\Admin\Categories\CategoryCreateRequest;
+use App\Http\Requests\Admin\Categories\CategoryUpdateRequest;
+use App\Http\Resources\Admin\Categories\CategoryListResource;
+use App\Http\Resources\Admin\Categories\CategoryResource;
+use App\Http\Resources\Admin\Categories\EditCategoryResource;
+use App\Http\Services\Admin\CategoryService;
 use App\Models\Category;
 
 class CategoryController extends BaseApiController

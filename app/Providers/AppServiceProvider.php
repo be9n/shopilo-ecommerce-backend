@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,16 +25,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
         Model::preventLazyLoading();
         Schema::defaultStringLength(125);
 
         JsonResource::withoutWrapping();
-
-        RedirectResponse::macro('withAlert', function ($message, $type = 'success') {
-            return $this->with('alert', [
-                'message' => $message,
-                'type' => $type
-            ]);
-        });
     }
 }

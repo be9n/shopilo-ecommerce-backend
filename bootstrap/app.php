@@ -18,6 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
+        then: function () {
+            Route::middleware('api')
+                ->prefix('api/admin')
+                ->group(base_path('routes/admin_api.php'));
+
+            Route::middleware('api')
+                ->prefix('api/customer')
+                ->group(base_path('routes/customer_api.php'));
+        }
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(append: [

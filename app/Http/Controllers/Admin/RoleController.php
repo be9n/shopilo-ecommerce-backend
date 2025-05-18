@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\RegularException;
 use App\Http\Controllers\Admin\BaseApiController;
-use App\Http\Requests\Api\Roles\RoleCreateRequest;
-use App\Http\Requests\Api\Roles\RoleUpdateRequest;
-use App\Http\Resources\Api\Admin\Roles\EditRoleResource;
-use App\Http\Resources\Api\Admin\Roles\RoleResource;
-use App\Http\Services\RoleService;
+use App\Http\Requests\Admin\Roles\RoleCreateRequest;
+use App\Http\Requests\Admin\Roles\RoleUpdateRequest;
+use App\Http\Resources\Admin\Roles\EditRoleResource;
+use App\Http\Resources\Admin\Roles\RoleResource;
+use App\Http\Services\Admin\RoleService;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 

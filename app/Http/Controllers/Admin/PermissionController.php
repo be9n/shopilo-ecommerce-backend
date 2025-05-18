@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseApiController;
-use App\Http\Resources\Api\Admin\Permissions\PermissionResource;
+use App\Http\Resources\Admin\Permissions\PermissionResource;
 use App\Models\Permission;
 
 class PermissionController extends BaseApiController

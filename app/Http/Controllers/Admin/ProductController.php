@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Api\Products\ProductCreateRequest;
-use App\Http\Requests\Api\Products\ProductUpdateRequest;
-use App\Http\Resources\Api\Admin\Products\DetailedProductResource;
-use App\Http\Resources\Api\Admin\Products\ProductResource;
-use App\Http\Services\ProductService;
+use App\Http\Requests\Admin\Products\ProductCreateRequest;
+use App\Http\Requests\Admin\Products\ProductUpdateRequest;
+use App\Http\Resources\Admin\Products\DetailedProductResource;
+use App\Http\Resources\Admin\Products\ProductResource;
+use App\Http\Services\Admin\ProductService;
 use App\Models\Product;
 use App\Traits\HasFile;
 use Illuminate\Support\Facades\Cache;
