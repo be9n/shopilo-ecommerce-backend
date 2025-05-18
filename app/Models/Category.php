@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Category extends Model implements HasMedia
 {
@@ -52,5 +53,12 @@ class Category extends Model implements HasMedia
     public function getCanBeDeletedAttribute(): bool
     {
         return !$this->children()->exists() && !$this->products()->exists();
+    }
+
+    public function canDeleteMedia(Media $media): bool
+    {
+        $mediaCount = $this->getMedia($media->collection_name)->count();
+
+        return $mediaCount > 1;
     }
 }
