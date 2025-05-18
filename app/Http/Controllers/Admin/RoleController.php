@@ -32,7 +32,7 @@ class RoleController extends BaseApiController
         $roles = $this->roleService->getAllRoles($sortBy, $sortDir, $search);
 
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'roles' => $this->getPaginatedData(
                     RoleResource::collection(
@@ -46,7 +46,7 @@ class RoleController extends BaseApiController
     public function show(Role $role)
     {
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'role' => EditRoleResource::make($role->load('permissions'))
             ]
@@ -62,7 +62,7 @@ class RoleController extends BaseApiController
             $this->roleService->createRole($validated);
 
             DB::commit();
-            return $this->successResponse();
+            return $this->successResponse(__('Role created successfully'));
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -78,7 +78,7 @@ class RoleController extends BaseApiController
             $this->roleService->updateRole($role, $validated);
 
             DB::commit();
-            return $this->successResponse();
+            return $this->successResponse(__('Role updated successfully'));
         } catch (RegularException $th) {
             DB::rollBack();
             return $this->failResponse($th->getMessage());

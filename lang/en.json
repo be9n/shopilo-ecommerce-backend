@@ -1,0 +1,21 @@
+{
+    "Processed successfully": "Processed successfully",
+    "User registered successfully": "User registered successfully",
+    "Logged in successfully": "Logged in successfully",
+    "Successfully logged out": "Successfully logged out",
+    "Successfully Processed": "Successfully Processed",
+    "Token refreshed successfully": "Token refreshed successfully",
+    "Category created successfully": "Category created successfully",
+    "Category updated successfully": "Category updated successfully",
+    "Category deleted successfully": "Category deleted successfully",
+    "File deleted successfully": "File deleted successfully",
+    "Product created successfully": "Product created successfully",
+    "Product updated successfully": "Product updated successfully",
+    "Product deleted successfully": "Product deleted successfully",
+    "Role created successfully": "Role created successfully",
+    "Role updated successfully": "Role updated successfully",
+    "Role deleted successfully": "Role deleted successfully",
+    "User created successfully": "User created successfully",
+    "User updated successfully": "User updated successfully",
+    "User deleted successfully": "User deleted successfully"
+}

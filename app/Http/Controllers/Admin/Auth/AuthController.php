@@ -22,7 +22,7 @@ class AuthController extends BaseApiController
         $token = JWTAuth::fromUser($user);
         // $refreshToken = JWTAuth::fromUser($user); // Generate refresh token
 
-        return $this->successResponse('User registered successfully', [
+        return $this->successResponse(__('User registered successfully'), [
             'user' => $user,
             'access_token' => $token,
             // 'refresh_token' => $refreshToken,
@@ -42,7 +42,7 @@ class AuthController extends BaseApiController
         // $refreshToken = JWTAuth::claims(['refresh' => true])
         //     ->fromUser($user); // Generate refresh token
 
-        return $this->successResponse('Logged in successfully', [
+        return $this->successResponse(__('Logged in successfully'), [
             'user' => $user,
             'access_token' => $token,
             // 'refresh_token' => $refreshToken,
@@ -54,13 +54,13 @@ class AuthController extends BaseApiController
     {
         // JWTAuth::invalidate(JWTAuth::getToken());
         auth()->logout();
-        return $this->successResponse('Successfully logged out');
+        return $this->successResponse(__('Successfully logged out'));
     }
 
     public function me()
     {
         $user = auth()->user();
-        return $this->successResponse("Successfully Processed", [
+        return $this->successResponse(__('Successfully Processed'), [
             'user' => UserResourceWithPermissions::make($user->load('roles.permissions')),
         ]);
     }
@@ -81,7 +81,7 @@ class AuthController extends BaseApiController
 
             $newRefreshToken = JWTAuth::fromUser($user, ['refresh' => true]);
 
-            return $this->successResponse('Token refreshed successfully', [
+            return $this->successResponse(__('Token refreshed successfully'), [
                 'access_token' => $newAccessToken,
                 'refresh_token' => $newRefreshToken,
                 // 'expires_in' => auth()->factory()->getTTL() * 60

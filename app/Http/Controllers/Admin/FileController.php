@@ -37,7 +37,7 @@ class FileController extends BaseApiController
     {
         try {
             $this->mediaService->delete($media);
-            return $this->successResponse('File deleted successfully');
+            return $this->successResponse(__('File deleted successfully'));
         } catch (MediaDeletionException $e) {
             return $this->failResponse($e->getMessage());
         }

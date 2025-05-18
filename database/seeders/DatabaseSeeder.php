@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\AdminRoleEnum;
+use App\Exceptions\RegularException;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,33 +20,37 @@ class DatabaseSeeder extends Seeder
 
         // Run permission and role seeders
         $this->call([
-            PermissionSeeder2::class,
+            PermissionSeeder::class,
             RoleSeeder::class,
             // CategorySeeder::class,
-            ProductSeeder::class,
+            // ProductSeeder::class,
         ]);
 
-        $admin = User::firstWhere('email', 'super-admin@gmail.com');
-        if (!$admin) {
-            $admin = User::create([
-                'name' => 'Super Admin User',
-                'email' => 'super-admin@gmail.com',
-                'password' => "123123"
-            ]);
+        $this->createSuperAdmin();
+    }
 
-            $admin->assignRole('super-admin');
+    private function createSuperAdmin()
+    {
+        $email = config('admin.super_admin.email');
+        $password = config('admin.super_admin.password');
+        $name = config('admin.super_admin.name');
+
+        if (empty($email) || empty($password)) {
+            throw new RegularException(
+                'Super admin email and password must be defined in your environment. ' .
+                'Please check your .env file for ADMIN_SUPER_EMAIL and ADMIN_SUPER_PASSWORD keys.'
+            );
         }
 
-
-        $manager = User::firstWhere('email', 'manager@gmail.com');
-        if (!$manager) {
-            $manager = User::factory()->create([
-                'name' => 'Manager User',
-                'email' => 'manager@gmail.com',
-                'password' => "123123"
+        $admin = User::firstWhere('email', $email);
+        if (!$admin) {
+            $admin = User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password
             ]);
 
-            $manager->assignRole('manager');
+            $admin->assignRole(AdminRoleEnum::SUPER_ADMIN->value);
         }
     }
 }

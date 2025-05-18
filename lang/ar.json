@@ -1,0 +1,21 @@
+{
+    "Processed successfully": "تم المعالجة بنجاح",
+    "User registered successfully": "تم إنشاء المستخدم بنجاح",
+    "Logged in successfully": "تم تسجيل الدخول بنجاح",
+    "Successfully logged out": "تم تسجيل الخروج بنجاح",
+    "Successfully Processed": "تم المعالجة بنجاح",
+    "Token refreshed successfully": "تم تحديث الرمز المنفصل بنجاح",
+    "Category created successfully": "تم إنشاء الفئة بنجاح",
+    "Category updated successfully": "تم تحديث الفئة بنجاح",
+    "Category deleted successfully": "تم حذف الفئة بنجاح",
+    "File deleted successfully": "تم حذف الملف بنجاح",
+    "Product created successfully": "تم إنشاء المنتج بنجاح",
+    "Product updated successfully": "تم تحديث المنتج بنجاح",
+    "Product deleted successfully": "تم حذف المنتج بنجاح",
+    "Role created successfully": "تم إنشاء الدور بنجاح",
+    "Role updated successfully": "تم تحديث الدور بنجاح",
+    "Role deleted successfully": "تم حذف الدور بنجاح",
+    "User created successfully": "تم إنشاء المستخدم بنجاح",
+    "User updated successfully": "تم تحديث المستخدم بنجاح",
+    "User deleted successfully": "تم حذف المستخدم بنجاح"
+}

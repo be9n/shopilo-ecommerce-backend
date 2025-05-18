@@ -25,7 +25,7 @@ class ProductController extends BaseApiController
         $categoryId = request('category_id');
 
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'products' => $this->getPaginatedData(
                     ProductResource::collection(
@@ -39,7 +39,7 @@ class ProductController extends BaseApiController
     public function show(Product $product)
     {
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'product' =>
                     DetailedProductResource::make(
@@ -55,7 +55,7 @@ class ProductController extends BaseApiController
 
         $this->productService->createProduct($validated);
 
-        return $this->successResponse('Product created successfully');
+        return $this->successResponse(__('Product created successfully'));
     }
 
     public function update(ProductUpdateRequest $request, Product $product)
@@ -64,13 +64,13 @@ class ProductController extends BaseApiController
 
         $this->productService->updateProduct($product, $validated);
 
-        return $this->successResponse('Product updated successfully');
+        return $this->successResponse(__('Product updated successfully'));
     }
 
     public function destroy(Product $product)
     {
         $this->productService->deleteProduct($product);
 
-        return $this->successResponse('Product deleted successfully');
+        return $this->successResponse(__('Product deleted successfully'));
     }
 }

@@ -23,7 +23,7 @@ class CategoryController extends BaseApiController
         $search = request('search');
 
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'categories' => $this->getPaginatedData(
                     CategoryResource::collection(
@@ -37,7 +37,7 @@ class CategoryController extends BaseApiController
     public function show(Category $category)
     {
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'category' =>
                     EditCategoryResource::make(
@@ -53,7 +53,7 @@ class CategoryController extends BaseApiController
 
         $this->categoryService->createCategory($validated);
 
-        return $this->successResponse('Category created successfully');
+        return $this->successResponse(__('Category created successfully'));
     }
 
     public function update(CategoryUpdateRequest $request, Category $category)
@@ -62,14 +62,14 @@ class CategoryController extends BaseApiController
 
         $this->categoryService->updateCategory($category, $validated);
 
-        return $this->successResponse('Category updated successfully');
+        return $this->successResponse(__('Category updated successfully'));
     }
 
     public function destroy(Category $category)
     {
         $this->categoryService->deleteCategory($category);
 
-        return $this->successResponse('Category deleted successfully');
+        return $this->successResponse(__('Category deleted successfully'));
     }
 
     public function list()
@@ -78,7 +78,7 @@ class CategoryController extends BaseApiController
         $withChildren = request('with_children', false);
 
         return $this->successResponse(
-            'Processed successfully',
+            __('Processed successfully'),
             [
                 'categories' => $this->getPaginatedData(
                     CategoryListResource::collection(

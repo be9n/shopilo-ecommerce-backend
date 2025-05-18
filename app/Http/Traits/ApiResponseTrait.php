@@ -17,11 +17,11 @@ trait ApiResponseTrait
      * @param ?array<string> $data
      * @return JsonResponse
      */
-    public function successResponse(string $message = 'Processed Successfully', ?array $data = null): JsonResponse
+    public function successResponse(string $message = null, ?array $data = null): JsonResponse
     {
         return $this->apiResponse([
             'success' => true,
-            'message' => $message,
+            'message' => $message ?? __('Processed successfully'),
             'data' => $data,
         ]);
     }

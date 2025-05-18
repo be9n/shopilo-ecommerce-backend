@@ -16,41 +16,63 @@ class PermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
 
-        $allPermissions = $this->getAllPermissions();
-        $this->deleteUnusedPermissions($allPermissions);
+        $allPermissionTree = $this->getAllPermissions();
 
-        foreach ($allPermissions as $item) {
-            $permission = Permission::firstOrNew([
-                'name' => $item['name']
+        $this->deleteUnusedPermissions($allPermissionTree);
+        $this->seedPermissions($allPermissionTree);
+    }
+
+    private function seedPermissions(array $allPermissionTrees, $parentId = null): void
+    {
+        foreach ($allPermissionTrees as $permission) {
+            $newPermission = Permission::firstOrNew([
+                'name' => $permission['name']
             ]);
-            $permission->title = $item['title'];
-            $permission->section = $item['section'];
-            $permission->description = $item['description'];
-            $permission->save();
+            $newPermission->parent_id = $parentId;
+            $newPermission->title = $permission['title'];
+            $newPermission->description = $permission['description'];
+            $newPermission->guard_name = 'web';
+            $newPermission->save();
+
+            if (isset($permission['children']) && is_array($permission['children'])) {
+                $this->seedPermissions($permission['children'], $newPermission->id);
+            }
         }
     }
 
-    public function getAllPermissions()
+    private function deleteUnusedPermissions($permissionTree)
+    {
+        function getAllPermissionNames(array $permissionTree): array
+        {
+            $names = [];
+
+            foreach ($permissionTree as $permission) {
+                $names[] = strtolower($permission['name']);
+
+                if (isset($permission['children']) && is_array($permission['children'])) {
+                    $names = array_merge($names, getAllPermissionNames($permission['children']));
+                }
+            }
+
+            return $names;
+        }
+
+        $permissionNames = getAllPermissionNames($permissionTree);
+
+        Permission::whereNotIn('name', $permissionNames)->delete();
+    }
+
+    private function getAllPermissions()
     {
         $directory = __DIR__ . '/data/permissions';
-        $allPermissions = [];
+        $allPermissionTree = [];
         foreach (scandir($directory) as $file) {
             if ($file === '.' || $file === '..')
                 continue;
-
-            $allPermissions = array_merge($allPermissions, include($directory . '/' . $file));
+            $fileData = include $directory . '/' . $file;
+            $allPermissionTree[] = $fileData;
         }
 
-        return $allPermissions;
-    }
-
-    public function deleteUnusedPermissions($permissions)
-    {
-        $permissionNames = collect($permissions)
-            ->select('name')
-            ->map(fn($permission) => strtolower($permission['name']))
-            ->toArray();
-
-        Permission::whereNotIn('name', $permissionNames)->delete();
+        return $allPermissionTree;
     }
 }

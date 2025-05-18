@@ -11,7 +11,7 @@ class PermissionController extends BaseApiController
 
     public function permissionsList()
     {
-        return $this->successResponse("Processed successfully", [
+        return $this->successResponse(__('Processed successfully'), [
             'permissions_list' => PermissionResource::collection(Permission::mainGroup()->with('children.children')->get())
         ]);
     }
