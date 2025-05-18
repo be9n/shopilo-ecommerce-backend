@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Api\Categories\CategoryCreateRequest;
 use App\Http\Requests\Api\Categories\CategoryUpdateRequest;
@@ -72,7 +72,7 @@ class CategoryController extends BaseApiController
         return $this->successResponse('Category deleted successfully');
     }
 
-    public function categoriesList()
+    public function list()
     {
         $parent = request('parent', false);
         $withChildren = request('with_children', false);

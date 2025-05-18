@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Api;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\Api\BaseApiController;
+use App\Http\Controllers\Admin\BaseApiController;
 use App\Exceptions\MediaDeletionException;
 use App\Services\MediaService;
 use Illuminate\Http\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Api;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Api\Products\ProductCreateRequest;
 use App\Http\Requests\Api\Products\ProductUpdateRequest;

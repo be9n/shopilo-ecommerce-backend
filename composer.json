@@ -13,14 +13,12 @@
         "codezero/laravel-unique-translation": "^4.3",
         "doctrine/dbal": "^4.2",
         "f9webltd/laravel-api-response-helpers": "^2.1",
-        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "league/flysystem-aws-s3-v3": "3.0",
         "spatie/laravel-medialibrary": "^11.12",
         "spatie/laravel-permission": "^6.16",
         "spatie/laravel-translatable": "^6.11",
-        "tightenco/ziggy": "^2.4",
         "tymon/jwt-auth": "^2.2"
     },
     "require-dev": {
@@ -63,12 +61,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
-        ],
-        "dev:ssr": [
-            "npm run build:ssr",
-            "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr"
+            "php artisan serve"
         ]
     },
     "extra": {

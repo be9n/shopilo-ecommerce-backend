@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Api\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
-use App\Http\Controllers\Admin\Api\BaseApiController;
+use App\Http\Controllers\Admin\BaseApiController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Api\Admin\Auth\UserResourceWithPermissions;
