@@ -47,7 +47,8 @@ class DatabaseSeeder extends Seeder
             $admin = User::create([
                 'name' => $name,
                 'email' => $email,
-                'password' => $password
+                'password' => $password,
+                'user_type' => 'admin'
             ]);
 
             $admin->assignRole(AdminRoleEnum::SUPER_ADMIN->value);

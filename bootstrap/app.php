@@ -1,6 +1,7 @@
 <?php
 
 use App\Exceptions\CanBeDeletedException;
+use App\Http\Middleware\CheckUserTypeMiddleware;
 use App\Http\Middleware\SetLocaleMiddleware;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,11 +20,11 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware('api')
+            Route::middleware(['api', 'checkUserType:admin'])
                 ->prefix('api/admin')
                 ->group(base_path('routes/admin_api.php'));
 
-            Route::middleware('api')
+            Route::middleware(['api', 'checkUserType:customer'])
                 ->prefix('api/customer')
                 ->group(base_path('routes/customer_api.php'));
         }
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'checkUserType' => CheckUserTypeMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
