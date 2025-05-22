@@ -10,7 +10,6 @@ use App\Http\Resources\Admin\Roles\EditRoleResource;
 use App\Http\Resources\Admin\Roles\RoleResource;
 use App\Http\Services\Admin\RoleService;
 use App\Models\Role;
-use Illuminate\Support\Facades\DB;
 
 class RoleController extends BaseApiController
 {
@@ -25,20 +24,12 @@ class RoleController extends BaseApiController
 
     public function index()
     {
-        $sortBy = request('sort_by');
-        $sortDir = request('sort_dir');
-        $search = request('search');
-
-        $roles = $this->roleService->getAllRoles($sortBy, $sortDir, $search);
+        $roles = $this->roleService->getAllRoles(request()->query());
 
         return $this->successResponse(
             __('Processed successfully'),
             [
-                'roles' => $this->getPaginatedData(
-                    RoleResource::collection(
-                        $roles
-                    )
-                )
+                'roles' => $this->withCustomPagination($roles, RoleResource::class)
             ]
         );
     }
@@ -55,33 +46,21 @@ class RoleController extends BaseApiController
 
     public function store(RoleCreateRequest $request)
     {
-        $validated = $request->validated();
+        $this->roleService->createRole($request->validated());
 
-        DB::beginTransaction();
-        try {
-            $this->roleService->createRole($validated);
-
-            DB::commit();
-            return $this->successResponse(__('Role created successfully'));
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        return $this->successResponse(
+            __('Role created successfully')
+        );
     }
 
     public function update(RoleUpdateRequest $request, Role $role)
     {
-        $validated = $request->validated();
-
-        DB::beginTransaction();
         try {
-            $this->roleService->updateRole($role, $validated);
+            $this->roleService->updateRole($role, $request->validated());
 
-            DB::commit();
             return $this->successResponse(__('Role updated successfully'));
-        } catch (RegularException $th) {
-            DB::rollBack();
-            return $this->failResponse($th->getMessage());
+        } catch (RegularException $e) {
+            return $this->failResponse($e->getMessage());
         }
     }
 }

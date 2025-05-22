@@ -18,18 +18,12 @@ class CategoryController extends BaseApiController
 
     public function index()
     {
-        $sortBy = request('sort_by');
-        $sortDir = request('sort_dir');
-        $search = request('search');
+        $categories = $this->categoryService->getAllCategories(params: request()->query());
 
         return $this->successResponse(
             __('Processed successfully'),
             [
-                'categories' => $this->getPaginatedData(
-                    CategoryResource::collection(
-                        $this->categoryService->getAllCategories($sortBy, $sortDir, $search)
-                    )
-                )
+                'categories' => $this->withCustomPagination($categories, CategoryResource::class)
             ]
         );
     }
@@ -77,14 +71,12 @@ class CategoryController extends BaseApiController
         $parent = request('parent', false);
         $withChildren = request('with_children', false);
 
+        $categories = $this->categoryService->getCategoriesList($parent, $withChildren);
+
         return $this->successResponse(
             __('Processed successfully'),
             [
-                'categories' => $this->getPaginatedData(
-                    CategoryListResource::collection(
-                        $this->categoryService->getCategoriesList($parent, $withChildren)
-                    )
-                )
+                'categories' => CategoryListResource::collection($categories)
             ]
         );
     }

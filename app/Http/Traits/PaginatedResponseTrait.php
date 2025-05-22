@@ -7,19 +7,19 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 trait PaginatedResponseTrait
 {
-    // protected function paginatedResponse(string $message, ResourceCollection $resource): \Illuminate\Http\JsonResponse
-    // {
-    //     $paginator = $resource->resource;
 
-    //     if (!$paginator instanceof LengthAwarePaginator) {
-    //         return $this->successResponse($message, $resource->resolve());
-    //     }
+    protected function getPaginatedData(ResourceCollection $resource)
+    {
+        $paginator = $resource->resource;
+        if (!$paginator instanceof LengthAwarePaginator) {
+            return $resource->resolve();
+        }
 
-    //     return $this->successResponse($message, [
-    //         'data' => $resource->resolve(),
-    //         'pagination' => $this->getPaginationData($paginator)
-    //     ]);
-    // }
+        return [
+            'data' => $resource->resolve(),
+            'pagination' => $this->getPaginationData($paginator)
+        ];
+    }
 
     protected function getPaginationData(LengthAwarePaginator $paginator): array
     {
@@ -37,19 +37,6 @@ trait PaginatedResponseTrait
             'from' => $paginator->firstItem(),
             'to' => $paginator->lastItem(),
             'path' => $paginator->path(),
-        ];
-    }
-
-    protected function getPaginatedData(ResourceCollection $resource)
-    {
-        $paginator = $resource->resource;
-        if (!$paginator instanceof LengthAwarePaginator) {
-            return $resource->resolve();
-        }
-
-        return [
-            'data' => $resource->resolve(),
-            'pagination' => $this->getPaginationData($paginator)
         ];
     }
 }

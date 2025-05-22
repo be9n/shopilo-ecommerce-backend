@@ -6,26 +6,26 @@ use App\Exceptions\CanBeDeletedException;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
-class CategoryService
+class CategoryService extends BaseService
 {
 
-    public function getAllCategories(?string $sortBy, ?string $sortDir, ?string $search)
+    public function getAllCategories(array $params = [])
     {
+        $params = $this->prepareCommonQueryParams($params);
+
         return Category::query()
             ->with('parent')
-            ->when($search, fn($q) => $q->where('name', 'like', "%{$search}%"))
-            ->when($sortBy, function (Builder $builder) use ($sortBy, $sortDir) {
-                return $builder->orderBy($sortBy, $sortDir ?? 'asc');
-            })
             ->withCount('products')
-            ->paginate(10);
+            ->applySearch($params['search'])
+            ->sortBy($params['sort_by'], $params['sort_dir'])
+            ->paginate($params['per_page']);
     }
 
     public function getCategoriesList(bool $parent = false, bool $withChildren = false)
     {
         return Category::when(
-            $parent,
-            function (Builder $builder) use ($withChildren) {
+            value: $parent,
+            callback: function (Builder $builder) use ($withChildren) {
                 // When $parent is true - get only parent categories
                 return $builder
                     ->when(
@@ -34,7 +34,7 @@ class CategoryService
                     )
                     ->parent();
             },
-            fn(Builder $q) => $q->child()
+            default: fn(Builder $q) => $q->child()
         )
             ->get();
     }
@@ -61,8 +61,8 @@ class CategoryService
 
     public function deleteCategory(Category $category)
     {
-        if (!$category->can_be_deleted) {
-            throw new CanBeDeletedException('Category has children');
+        if (!$category->can_be_deleted['status']) {
+            throw new CanBeDeletedException($category->can_be_deleted['message']);
         }
 
         return $category->delete();

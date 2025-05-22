@@ -103,7 +103,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     [
                         'success' => false,
                         'code' => Response::HTTP_BAD_REQUEST,
-                        'message' => __('This item cannot be deleted!'),
+                        'message' => $exception->getMessage() ?? __('This item cannot be deleted!'),
                         'data' => null,
                         'errors' => null
                     ],

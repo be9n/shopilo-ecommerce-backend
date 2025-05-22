@@ -8,8 +8,6 @@ use App\Http\Resources\Admin\Products\DetailedProductResource;
 use App\Http\Resources\Admin\Products\ProductResource;
 use App\Http\Services\Admin\ProductService;
 use App\Models\Product;
-use App\Traits\HasFile;
-use Illuminate\Support\Facades\Cache;
 
 class ProductController extends BaseApiController
 {
@@ -19,19 +17,15 @@ class ProductController extends BaseApiController
 
     public function index()
     {
-        $sortBy = request('sort_by');
-        $sortDir = request('sort_dir');
-        $search = request('search');
-        $categoryId = request('category_id');
+        $params = request()->query();
+        $params['category_id'] = request(key: 'category_id');
+
+        $products = $this->productService->getAllProducts($params);
 
         return $this->successResponse(
             __('Processed successfully'),
             [
-                'products' => $this->getPaginatedData(
-                    ProductResource::collection(
-                        $this->productService->getAllProducts($sortBy, $sortDir, $search, $categoryId)
-                    )
-                )
+                'products' => $this->withCustomPagination($products, ProductResource::class)
             ]
         );
     }

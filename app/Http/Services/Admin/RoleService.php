@@ -4,45 +4,48 @@ namespace App\Http\Services\Admin;
 
 use App\Exceptions\RegularException;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
-class RoleService
+class RoleService extends BaseService
 {
-    public function getAllRoles(?string $sortBy, ?string $sortDir, ?string $search = null)
+    public function getAllRoles(array $params = [])
     {
+        $params = $this->prepareCommonQueryParams($params);
+
         return Role::withCount('permissions')
-            ->whereNot('name', 'super-admin')
-            ->orderBy($sortBy ?? "id", $sortDir ?? "desc")
-            ->when($search, function (Builder $builder) use ($search) {
-                return $builder->where('title', 'like', "%$search%");
-            })
-            ->paginate(10);
+            ->whereNot('roles.name', 'super-admin')
+            ->applySearch($params['search'])
+            ->sortBy($params['sort_by'], $params['sort_dir'])
+            ->paginate($params['per_page']);
     }
 
-    public function createRole(array $data)
+    public function createRole(array $data): Role
     {
-        $data['name'] = Str::slug($data['title']);
-        $data['guard_name'] = 'web';
-        $role = Role::create($data);
+        return DB::transaction(function () use ($data) {
+            $data['name'] = Str::slug($data['title']);
+            $data['guard_name'] = 'web';
+            $role = Role::create($data);
 
-        $role->syncPermissions($data['permission_names']);
+            $role->syncPermissions($data['permission_names']);
 
-        return $role;
+            return $role;
+        });
     }
 
-    public function updateRole(Role $role, array $data)
+    public function updateRole(Role $role, array $data): Role
     {
         if ($role->name === 'super-admin') {
             throw new RegularException('Super admin role cannot be updated');
         }
 
-        $data['name'] = Str::slug($data['title']);
-        $role->update($data);
+        return DB::transaction(function () use ($role, $data) {
+            $data['name'] = Str::slug($data['title']);
+            $role->update($data);
+            $role->syncPermissions($data['permission_names']);
 
-        $role->syncPermissions($data['permission_names']);
-
-        return $role;
+            return $role;
+        });
     }
 }

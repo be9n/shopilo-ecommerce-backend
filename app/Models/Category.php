@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
+use App\Contracts\Sortable as SortableContract;
+use App\ModelAttributes\CategoryAttributes;
 use App\Traits\HasFile;
+use App\Traits\HasSearchable;
+use App\Traits\HasSortable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Category extends Model implements HasMedia
+class Category extends Model implements HasMedia, SortableContract
 {
-    /** @use HasFactory<\Database\Factories\CategoryFactory> */
-    use HasFactory, InteractsWithMedia, HasFile, HasTranslations;
+    use HasFactory, HasFile, HasTranslations;
+    use HasSortable, HasSearchable;
 
     protected $fillable = [
         'name',
@@ -23,6 +26,24 @@ class Category extends Model implements HasMedia
 
     protected $translatable = [
         'name',
+    ];
+
+    protected $searchable = [
+        'columns' => [
+            'categories.name' => 10,
+        ],
+    ];
+
+    /**
+     * Sortable columns for the model.
+     *
+     * @var array<string>
+     */
+    protected array $sortable = [
+        'id',
+        'name',
+        'created_at',
+        'updated_at'
     ];
 
     public function parent()
@@ -50,15 +71,15 @@ class Category extends Model implements HasMedia
         $builder->whereHas('parent');
     }
 
-    public function getCanBeDeletedAttribute(): bool
-    {
-        return !$this->children()->exists() && !$this->products()->exists();
-    }
-
     public function canDeleteMedia(Media $media): bool
     {
         $mediaCount = $this->getMedia($media->collection_name)->count();
 
         return $mediaCount > 1;
+    }
+
+    public function getCanBeDeletedAttribute(): array
+    {
+        return CategoryAttributes::canBeDeleted($this);
     }
 }

@@ -6,21 +6,19 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 
 
-class ProductService
+class ProductService extends BaseService
 {
-    public function getAllProducts(?string $sortBy, ?string $sortDir, ?string $search, ?int $categoryId)
+    public function getAllProducts(array $params = [])
     {
+        $params = $this->prepareCommonQueryParams($params);
+        $categoryId = $params['category_id'] ?? null;
+
         return Product::with('category')
-            ->when($sortBy, function (Builder $builder) use ($sortBy, $sortDir) {
-                return $builder->orderBy($sortBy, $sortDir ?? 'asc');
-            })
-            ->when($search, function (Builder $builder) use ($search) {
-                return $builder->where('name', 'like', "%$search%");
-            })
-            ->when($categoryId, function (Builder $builder) use ($categoryId) {
-                return $builder->where('category_id', $categoryId);
-            })
-            ->paginate(15);
+            ->when($categoryId, fn(Builder $builder) =>
+                $builder->where('category_id', $categoryId))
+            ->applySearch($params['search'])
+            ->sortBy($params['sort_by'], $params['sort_dir'])
+            ->paginate($params['per_page']);
     }
 
     public function createProduct($data)
