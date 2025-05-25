@@ -3,22 +3,19 @@
 namespace App\Http\Services\Admin;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder;
 
 
 class ProductService extends BaseService
 {
     public function getAllProducts(array $params = [])
     {
-        $params = $this->prepareCommonQueryParams($params);
-        $categoryId = $params['category_id'] ?? null;
-
+        $commonParams = $this->prepareCommonQueryParams($params);
+        
         return Product::with('category')
-            ->when($categoryId, fn(Builder $builder) =>
-                $builder->where('category_id', $categoryId))
-            ->applySearch($params['search'])
-            ->sortBy($params['sort_by'], $params['sort_dir'])
-            ->paginate($params['per_page']);
+            ->filter($commonParams['filters'])
+            ->applySearch($commonParams['search'])
+            ->sortBy($commonParams['sort_by'], $commonParams['sort_dir'])
+            ->paginate($commonParams['per_page']);
     }
 
     public function createProduct($data)

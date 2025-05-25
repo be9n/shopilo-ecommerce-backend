@@ -18,8 +18,6 @@ class ProductController extends BaseApiController
     public function index()
     {
         $params = request()->query();
-        $params['category_id'] = request(key: 'category_id');
-
         $products = $this->productService->getAllProducts($params);
 
         return $this->successResponse(

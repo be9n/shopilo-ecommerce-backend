@@ -1,6 +1,8 @@
 <?php
 
 use App\Exceptions\CanBeDeletedException;
+use App\Exceptions\ModelAbilityException;
+use App\Exceptions\RegularException;
 use App\Http\Middleware\CheckUserTypeMiddleware;
 use App\Http\Middleware\SetLocaleMiddleware;
 use Illuminate\Auth\AuthenticationException;
@@ -43,7 +45,18 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable|Exception $exception) {
-            if ($exception instanceof NotFoundHttpException) {
+            if ($exception instanceof RegularException) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'code' => Response::HTTP_BAD_REQUEST,
+                        'message' => $exception->getMessage(),
+                        'data' => null,
+                        'errors' => null,
+                    ],
+                    Response::HTTP_BAD_REQUEST
+                );
+            } elseif ($exception instanceof NotFoundHttpException) {
                 return response()->json(
                     [
                         'success' => false,
@@ -98,12 +111,12 @@ return Application::configure(basePath: dirname(__DIR__))
                     ],
                     Response::HTTP_FORBIDDEN
                 );
-            } elseif ($exception instanceof CanBeDeletedException) {
+            } elseif ($exception instanceof ModelAbilityException) {
                 return response(
                     [
                         'success' => false,
                         'code' => Response::HTTP_BAD_REQUEST,
-                        'message' => $exception->getMessage() ?? __('This item cannot be deleted!'),
+                        'message' => $exception->getMessage() ?? __('This action is not allowed!'),
                         'data' => null,
                         'errors' => null
                     ],

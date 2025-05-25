@@ -18,6 +18,7 @@ class BaseService
             'sort_dir' => $params['sort_dir'] ?? config('query-params.default_sort_dir'),
             'search' => $params['search'] ?? null,
             'per_page' => $params['per_page'] ?? config('query-params.per_page.default'),
+            'filters' => $params['filters'] ?? [],
         ];
     }
 }

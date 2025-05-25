@@ -2,7 +2,6 @@
 
 namespace App\Http\Services\Admin;
 
-use App\Exceptions\CanBeDeletedException;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -61,9 +60,7 @@ class CategoryService extends BaseService
 
     public function deleteCategory(Category $category)
     {
-        if (!$category->can_be_deleted['status']) {
-            throw new CanBeDeletedException($category->can_be_deleted['message']);
-        }
+        $category->ensureAbility('canBeDeleted');
 
         return $category->delete();
     }

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseApiController;
-use App\Exceptions\MediaDeletionException;
-use App\Services\MediaService;
+use App\Http\Services\Admin\MediaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -35,11 +34,8 @@ class FileController extends BaseApiController
      */
     public function destroy(Request $request, Media $media): JsonResponse
     {
-        try {
-            $this->mediaService->delete($media);
-            return $this->successResponse(__('File deleted successfully'));
-        } catch (MediaDeletionException $e) {
-            return $this->failResponse($e->getMessage());
-        }
+        $this->mediaService->delete($media);
+        
+        return $this->successResponse(__('File deleted successfully'));
     }
 }

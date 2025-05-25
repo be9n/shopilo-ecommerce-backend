@@ -12,21 +12,21 @@ class PaginatedResource extends JsonResource
      *
      * @var string
      */
-    protected $collects;
+    protected $resourceClass;
 
     /**
      * Create a new resource instance.
      *
      * @param  mixed  $resource
-     * @param  string|null  $collects
+     * @param  string|null  $resourceClass
      * @return void
      */
-    public function __construct($resource, $collects = null)
+    public function __construct($resource, $resourceClass = null)
     {
         parent::__construct($resource);
 
-        if ($collects) {
-            $this->collects = $collects;
+        if ($resourceClass) {
+            $this->resourceClass = $resourceClass;
         }
     }
 
@@ -41,14 +41,12 @@ class PaginatedResource extends JsonResource
         $paginator = $this->resource;
         if (!$paginator instanceof LengthAwarePaginator) {
             return [
-                'data' => $this->resource->toArray(),
+                'data' => $this->resourceClass::collection($this->resource)->toArray($request),
             ];
         }
 
-        $resourceClass = $this->collects;
-
         return [
-            'data' => $resourceClass::collection($paginator->items())->toArray($request),
+            'data' => $this->resourceClass::collection($paginator->items())->toArray($request),
             'pagination' => [
                 'has_pages' => $paginator->lastPage() > 1,
                 'current_page' => $paginator->currentPage(),

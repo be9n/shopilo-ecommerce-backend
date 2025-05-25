@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Contracts\Sortable as SortableContract;
+use App\ModelFilters\ProductFilter;
 use App\Traits\HasFile;
 use App\Traits\HasSearchable;
 use App\Traits\HasSortable;
+use App\Traits\ModelAbilities\ProductAbilities;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -15,7 +18,7 @@ use Spatie\Translatable\HasTranslations;
 class Product extends Model implements HasMedia, SortableContract
 {
     use HasFactory, HasTranslations, HasFile;
-    use HasSortable, HasSearchable;
+    use HasSortable, HasSearchable, Filterable, ProductAbilities;
 
     protected $fillable = [
         'name',
@@ -24,6 +27,7 @@ class Product extends Model implements HasMedia, SortableContract
         'category_id',
         'stock',
         'status',
+        'active'
     ];
 
     public array $translatable = [
@@ -53,15 +57,13 @@ class Product extends Model implements HasMedia, SortableContract
         'created_at'
     ];
 
+    public function modelFilter()
+    {
+        return $this->provideFilter(ProductFilter::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function canDeleteMedia(Media $media): bool
-    {
-        $mediaCount = $this->getMedia($media->collection_name)->count();
-
-        return $mediaCount > 1;
     }
 }

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Http\Services\Admin;
 
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Exceptions\MediaDeletionException;
+use App\Exceptions\ModelAbilityException;
 
 class MediaService
 {
@@ -15,24 +14,19 @@ class MediaService
      *
      * @param Media $media
      * @return bool
-     * @throws MediaDeletionException
+     * @throws ModelAbilityException
      */
     public function delete(Media $media): bool
     {
         // Get the related model
         $model = $media->model;
-
         if (!$model) {
             // If no model attached, we can safely delete
             return $this->performDelete($media);
         }
 
-        // Check if the model has media deletion rules
-        if (method_exists($model, 'canDeleteMedia')) {
-            if (!$model->canDeleteMedia($media)) {
-                throw new MediaDeletionException('Media cannot be deleted due to model-specific rules.');
-            }
-        }
+        // Check if this media can be deleted
+        $model->ensureAbility('canDeleteMedia', $media);
 
         return $this->performDelete($media);
     }
