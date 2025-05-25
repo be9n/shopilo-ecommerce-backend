@@ -25,8 +25,8 @@ class CategoryCreateRequest extends FormRequest
     {
         $rules = [
             'name' => ['required', 'array'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'parent_id' => ['required', Rule::exists('categories', 'id')->whereNull('parent_id')]
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'parent_id' => ['nullable', Rule::exists('categories', 'id')->whereNull('parent_id')]
         ];
 
         foreach (config('app.locales') as $locale) {

@@ -26,7 +26,7 @@ class CategoryUpdateRequest extends FormRequest
         $rules = [
             'name' => ['required', 'array'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'parent_id' => ['required', Rule::exists('categories', 'id')->whereNull('parent_id')]
+            'parent_id' => ['nullable', Rule::exists('categories', 'id')->whereNull('parent_id')]
         ];
 
         foreach (config('app.locales') as $locale) {

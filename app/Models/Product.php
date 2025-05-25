@@ -25,8 +25,6 @@ class Product extends Model implements HasMedia, SortableContract
         'description',
         'price',
         'category_id',
-        'stock',
-        'status',
         'active'
     ];
 

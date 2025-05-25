@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Customer\Auth;
 
 use App\Http\Controllers\Admin\BaseApiController;
 use App\Http\Resources\Customer\Auth\CustomerResource;
