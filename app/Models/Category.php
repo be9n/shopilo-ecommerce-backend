@@ -50,6 +50,10 @@ class Category extends Model implements HasMedia, SortableContract
         'updated_at'
     ];
 
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id')->whereNull('parent_id');

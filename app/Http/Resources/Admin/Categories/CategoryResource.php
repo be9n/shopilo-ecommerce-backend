@@ -15,6 +15,7 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'parent_category_name' => $this->parent?->name,
             'products_count' => $this->products_count,
+            'active' => $this->active,
         ];
     }
 }

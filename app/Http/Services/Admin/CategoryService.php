@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 class CategoryService extends BaseService
 {
 
+    public function __construct()
+    {
+        $this->model = Category::class;
+    }
+
     public function getAllCategories(array $params = [])
     {
         $params = $this->prepareCommonQueryParams($params);

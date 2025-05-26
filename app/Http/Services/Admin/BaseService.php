@@ -2,8 +2,6 @@
 
 namespace App\Http\Services\Admin;
 
-use Illuminate\Database\Eloquent\Model;
-
 class BaseService
 {
     protected string $model;

@@ -30,6 +30,7 @@ class Product extends Model implements HasMedia, SortableContract
 
     protected $casts = [
         'price' => 'float',
+        'active' => 'boolean',
     ];
 
     public array $translatable = [

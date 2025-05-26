@@ -14,6 +14,7 @@ class CategoryController extends BaseApiController
 {
     public function __construct(private CategoryService $categoryService)
     {
+        $this->service = $categoryService;
     }
 
     public function index()

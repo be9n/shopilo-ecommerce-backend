@@ -44,18 +44,14 @@ class ProductController extends BaseApiController
 
     public function store(ProductCreateRequest $request)
     {
-        $validated = $request->validated();
-
-        $this->productService->createProduct($validated);
+        $this->productService->createProduct($request->validated());
 
         return $this->successResponse(__('Product created successfully'));
     }
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
-        $validated = $request->validated();
-
-        $this->productService->updateProduct($product, $validated);
+        $this->productService->updateProduct($product, $request->validated());
 
         return $this->successResponse(__('Product updated successfully'));
     }
