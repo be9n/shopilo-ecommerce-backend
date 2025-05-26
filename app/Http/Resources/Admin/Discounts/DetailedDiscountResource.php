@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Admin\Products;
+namespace App\Http\Resources\Admin\Discounts;
 
 use App\Http\Resources\Admin\MediaResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DetailedProductResource extends JsonResource
+class DetailedDiscountResource extends JsonResource
 {
 
     public function toArray(Request $request): array
@@ -22,11 +22,14 @@ class DetailedProductResource extends JsonResource
             'id' => $this->id,
             'name' => $name,
             'description' => $description,
-            'images' => $this->getMedia('images')->isNotEmpty() ? MediaResource::collection($this->getMedia('images')) : null,
-            'price' => (float) $this->price,
-            'category_id' => $this->category_id,
-            'parent_category_id' => $this->category?->parent?->id,
-            'active' => $this->active,
+            'type' => $this->type,
+            'value' => $this->value,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'max_uses' => $this->max_uses,
+            'used_count' => $this->used_count,
+            'is_active' => $this->is_active,
+            'max_uses_per_user' => $this->max_uses_per_user,
         ];
     }
 }

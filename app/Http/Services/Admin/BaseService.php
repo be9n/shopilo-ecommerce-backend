@@ -2,8 +2,11 @@
 
 namespace App\Http\Services\Admin;
 
+use Illuminate\Database\Eloquent\Model;
+
 class BaseService
 {
+    protected string $model;
 
     /**
      * Prepare common query params
@@ -20,5 +23,10 @@ class BaseService
             'per_page' => $params['per_page'] ?? config('query-params.per_page.default'),
             'filters' => $params['filters'] ?? [],
         ];
+    }
+
+    public function changeActive(int $id, bool $active)
+    {
+        $this->model::findOrFail($id)->update(['active' => $active]);
     }
 }

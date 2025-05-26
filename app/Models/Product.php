@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Contracts\Sortable as SortableContract;
-use App\ModelFilters\ProductFilter;
 use App\Traits\HasFile;
 use App\Traits\HasSearchable;
 use App\Traits\HasSortable;
@@ -11,8 +10,8 @@ use App\Traits\ModelAbilities\ProductAbilities;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia, SortableContract
@@ -25,7 +24,12 @@ class Product extends Model implements HasMedia, SortableContract
         'description',
         'price',
         'category_id',
-        'active'
+        'active',
+        'discount_id'
+    ];
+
+    protected $casts = [
+        'price' => 'float',
     ];
 
     public array $translatable = [
@@ -55,13 +59,38 @@ class Product extends Model implements HasMedia, SortableContract
         'created_at'
     ];
 
-    public function modelFilter()
-    {
-        return $this->provideFilter(ProductFilter::class);
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function discount(): BelongsTo
+    {
+        return $this->belongsTo(Discount::class);
+    }
+
+    public function hasActiveDiscount(): bool
+    {
+        return $this->discount()->active()->exists();
+    }
+
+    public function getDiscountPriceAttribute(): float|null
+    {
+        if (!$this->hasActiveDiscount()) {
+            return null;
+        }
+
+        $discount = $this->discount;
+
+        if ($discount->type === 'fixed') {
+            return max(0, $this->price - $discount->value);
+        }
+
+        if ($discount->type === 'percentage') {
+            $discountAmount = $this->price * ($discount->value / 100);
+            return max(0, $this->price - $discountAmount);
+        }
+
+        return $this->price;
     }
 }

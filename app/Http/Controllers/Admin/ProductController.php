@@ -13,6 +13,7 @@ class ProductController extends BaseApiController
 {
     public function __construct(private ProductService $productService)
     {
+        $this->service = $productService;
     }
 
     public function index()

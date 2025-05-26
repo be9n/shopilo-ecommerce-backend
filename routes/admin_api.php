@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\FileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductController;
@@ -16,6 +17,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('roles', RoleController::class);
 
+    Route::post('products/{product}/change_active', [ProductController::class, 'changeActive']);
     Route::apiResource('products', ProductController::class);
 
     Route::get('categories/list', [CategoryController::class, 'list']);
@@ -24,4 +26,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('permissions/list', [PermissionController::class, 'permissionsList']);
 
     Route::delete('files/{media}', [FileController::class, 'destroy']);
+
+    Route::apiResource('discounts', DiscountController::class);
 });

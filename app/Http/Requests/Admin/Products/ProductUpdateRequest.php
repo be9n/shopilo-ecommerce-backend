@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests\Admin\Products;
 
+use App\Http\Requests\BaseFormRequest;
+use App\Rules\SingleActiveDiscountRule;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProductUpdateRequest extends FormRequest
+class ProductUpdateRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +31,9 @@ class ProductUpdateRequest extends FormRequest
             'images.*' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'description' => ['nullable', 'array'],
             'price' => ['required', 'numeric', 'between:1,9999.99'],
-            'category_id' => ['required', Rule::exists('categories', 'id')->whereNotNull('parent_id')]
+            'category_id' => ['required', Rule::exists('categories', 'id')->whereNotNull('parent_id')],
+            'discount_id' => ['nullable', Rule::exists('discounts', 'id')],
+            'active' => ['required', 'boolean'],
         ];
 
         foreach (config('app.locales') as $locale) {
