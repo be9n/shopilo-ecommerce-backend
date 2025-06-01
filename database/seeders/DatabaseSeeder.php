@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             // CategorySeeder::class,
             // ProductSeeder::class,
+            DiscountSeeder::class,
         ]);
 
         $this->createSuperAdmin();

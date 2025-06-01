@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 class DiscountService extends BaseService
 {
 
+    public function __construct()
+    {
+        $this->model = Discount::class;
+    }
+
     public function getAllDiscounts(array $params = [])
     {
         $commonParams = $this->prepareCommonQueryParams($params);
@@ -31,8 +36,15 @@ class DiscountService extends BaseService
         return $discount;
     }
 
-    public function deleteDiscount(Discount $discount): bool
+    public function deleteDiscount(Discount $discount)
     {
+        $discount->ensureAbility('canBeDeleted');
+        
         return $discount->delete();
+    }
+
+    public function getDiscountsList()
+    {
+        return Discount::get();
     }
 }

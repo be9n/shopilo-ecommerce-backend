@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasSortable;
+use App\Traits\ModelAbilities\DiscountAbilities;
 use Carbon\Carbon;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +15,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Discount extends Model
 {
-    use HasTranslations, Filterable, HasSortable, LogsActivity;
+    use HasTranslations, Filterable, HasSortable, LogsActivity, DiscountAbilities;
 
     public array $translatable = [
         'name',
@@ -29,7 +30,7 @@ class Discount extends Model
         'value',
         'start_date',
         'end_date',
-        'is_active',
+        'active',
         'max_uses',
         'used_count',
         'max_uses_per_user'
@@ -38,12 +39,11 @@ class Discount extends Model
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
-        'is_active' => 'boolean'
+        'active' => 'boolean'
     ];
     protected array $sortable = [
         'id',
         'name',
-        'type',
         'value',
     ];
 
@@ -52,7 +52,7 @@ class Discount extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'type', 'value', 'start_date', 'end_date', 'is_active', 'max_uses', 'max_uses_per_user'])
+            ->logOnly(['name', 'type', 'value', 'start_date', 'end_date', 'active', 'max_uses', 'max_uses_per_user'])
             ->dontLogIfAttributesChangedOnly(['description', 'used_count'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
@@ -66,7 +66,7 @@ class Discount extends Model
     public function scopeActive(Builder $query): Builder
     {
         $now = Carbon::now();
-        return $query->where('is_active', true)
+        return $query->where('active', true)
             ->where('start_date', '<=', $now)
             ->where('end_date', '>=', $now)
             ->where(function ($query) {

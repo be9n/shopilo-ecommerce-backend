@@ -3,9 +3,7 @@
 namespace App\Http\Requests\Admin\Products;
 
 use App\Http\Requests\BaseFormRequest;
-use App\Rules\SingleActiveDiscountRule;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class ProductUpdateRequest extends BaseFormRequest
@@ -32,7 +30,15 @@ class ProductUpdateRequest extends BaseFormRequest
             'description' => ['nullable', 'array'],
             'price' => ['required', 'numeric', 'between:1,9999.99'],
             'category_id' => ['required', Rule::exists('categories', 'id')->whereNotNull('parent_id')],
-            'discount_id' => ['nullable', Rule::exists('discounts', 'id')],
+            'discount_id' => [
+                'nullable',
+                Rule::exists('discounts', 'id')
+                    ->where(function ($query) {
+                        $query->where('active', true)
+                            ->where('start_date', '<=', now())
+                            ->where('end_date', '>=', now());
+                    })
+            ],
             'active' => ['required', 'boolean'],
         ];
 

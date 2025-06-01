@@ -32,5 +32,5 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::delete('files/{media}', [FileController::class, 'destroy']);
 
-    Route::apiResource('discounts', DiscountController::class);
+    Route::extendedApiResource('discounts', DiscountController::class);
 });

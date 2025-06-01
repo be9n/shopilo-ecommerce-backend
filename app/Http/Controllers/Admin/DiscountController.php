@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Admin\Discounts\DiscountCreateRequest;
 use App\Http\Requests\Admin\Discounts\DiscountUpdateRequest;
 use App\Http\Resources\Admin\Discounts\DetailedDiscountResource;
+use App\Http\Resources\Admin\Discounts\DiscountListResource;
 use App\Http\Resources\Admin\Discounts\DiscountResource;
 use App\Http\Services\Admin\DiscountService;
 use App\Models\Discount;
@@ -14,6 +15,7 @@ class DiscountController extends BaseApiController
 
     public function __construct(private DiscountService $discountService)
     {
+        $this->service = $discountService;
     }
 
     public function index()
@@ -48,5 +50,21 @@ class DiscountController extends BaseApiController
         $this->discountService->updateDiscount($discount, $request->validated());
 
         return $this->successResponse(__('Processed successfully'));
+    }
+
+    public function destroy(Discount $discount)
+    {
+        $this->discountService->deleteDiscount($discount);
+
+        return $this->successResponse(__('Processed successfully'));
+    }
+
+    public function list()
+    {
+        $discounts = $this->discountService->getDiscountsList();
+
+        return $this->successResponse(__('Processed successfully'), [
+            'discounts' => DiscountListResource::collection($discounts)
+        ]);
     }
 }

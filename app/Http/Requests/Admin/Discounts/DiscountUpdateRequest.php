@@ -3,10 +3,11 @@
 namespace App\Http\Requests\Admin\Discounts;
 
 use App\Enums\DiscountTypeEnum;
+use App\Http\Requests\BaseFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class DiscountUpdateRequest extends FormRequest
+class DiscountUpdateRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +32,7 @@ class DiscountUpdateRequest extends FormRequest
             'value' => ['required', 'numeric', 'between:1,9999.99'],
             'start_date' => ['required', 'date', 'date_format:Y-m-d'],
             'end_date' => ['required', 'date', 'after:start_date', 'date_format:Y-m-d'],
-            'is_active' => ['required', 'boolean'],
+            'active' => ['required', 'boolean'],
             'max_uses' => ['required', 'integer', 'min:1', 'max:1000000'],
             'max_uses_per_user' => ['required', 'integer', 'min:1', 'max:1000000'],
         ];

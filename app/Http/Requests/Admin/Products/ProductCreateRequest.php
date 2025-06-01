@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin\Products;
 
 use App\Http\Requests\BaseFormRequest;
-use App\Rules\SingleActiveDiscountRule;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Validation\Rule;
 
