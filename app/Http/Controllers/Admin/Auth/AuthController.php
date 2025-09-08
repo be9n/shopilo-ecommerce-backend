@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Auth;
 
+use App\Enums\UserTypeEnum;
 use App\Http\Controllers\Admin\BaseApiController;
 use App\Http\Requests\Admin\Auth\LoginRequest;
 use App\Http\Resources\Admin\Auth\AdminWithPermissionsResource;
@@ -19,6 +20,10 @@ class AuthController extends BaseApiController
         }
 
         $user = auth()->user();
+        if ($user->user_type !== UserTypeEnum::ADMIN) {
+            auth()->logout();
+            return $this->failResponse('Wrong credentials');
+        }
 
         return $this->successResponse(__('Logged in successfully'), [
             'user' => $user,
