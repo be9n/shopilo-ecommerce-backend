@@ -17,7 +17,7 @@ class ProductService extends BaseService
     {
         $commonParams = $this->prepareCommonQueryParams($params);
 
-        return Product::with('category')
+        return Product::with('category', 'discount')
             ->filter($commonParams['filters'])
             ->applySearch($commonParams['search'])
             ->sortBy($commonParams['sort_by'], $commonParams['sort_dir'])

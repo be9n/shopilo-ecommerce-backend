@@ -30,8 +30,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::extendedApiResource('categories', CategoryController::class);
 
     Route::get('permissions/list', [PermissionController::class, 'permissionsList']);
-
+    
     Route::delete('files/{media}', [FileController::class, 'destroy']);
-
+    
+    Route::get('discounts/list', [DiscountController::class, 'list']);
     Route::extendedApiResource('discounts', DiscountController::class);
 });

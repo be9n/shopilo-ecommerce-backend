@@ -17,7 +17,7 @@ class HomePageController extends BaseApiController
     public function __invoke(Request $request)
     {
         $categories = Category::child()->get();
-        $bestSellingProducts = Product::with('media')->get();
+        $bestSellingProducts = Product::with('media', 'discount')->get();
 
         return $this->successResponse(__('Processed successfully'), [
             'categories' => CategoryResource::collection($categories),

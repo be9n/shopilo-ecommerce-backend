@@ -6,12 +6,6 @@ use RuntimeException;
 
 trait HasSortable
 {
-    /**
-     * Get the sortable fields for the model.
-     *
-     * @return array<string>
-     * @throws \RuntimeException
-     */
     public function getSortableFields(): array
     {
         if (!property_exists($this, 'sortable')) {
@@ -27,14 +21,6 @@ trait HasSortable
         return $this->sortable;
     }
 
-    /**
-     * Apply sorting to a query builder instance.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string|null $sortBy
-     * @param string|null $sortDirection
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
     public function scopeSortBy($query, string|null $sortBy, string|null $sortDirection)
     {
         if (!$sortBy || !in_array($sortBy, $this->getSortableFields())) {

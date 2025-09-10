@@ -14,7 +14,7 @@ class DiscountResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
-            'value' => $this->value,
+            'value' => (float) $this->value,
             'start_date' => $this->start_date->format('Y-m-d'),
             'end_date' => $this->end_date->format('Y-m-d'),
             'max_uses' => $this->max_uses,
