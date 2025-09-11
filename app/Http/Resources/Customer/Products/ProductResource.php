@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'price' => (float) $this->price,
             'discount_price' => (float) round($this->discount_price, 2),
-            'discount_amount' => (float) $this->discount?->value,
+            'discount_value' => (float) $this->discount?->value,
             'discount_type' => $this->discount?->type,
             'images' => $images->isNotEmpty() ? MediaResource::collection($images) : null,
         ];
