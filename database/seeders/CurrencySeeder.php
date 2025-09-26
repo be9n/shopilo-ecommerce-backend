@@ -8,23 +8,34 @@ use Illuminate\Database\Seeder;
 
 class CurrencySeeder extends Seeder
 {
-    public function __construct(private CurrencyService $currencyService)
+    public function __construct()
     {
     }
 
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(CurrencyService $currencyService): void
     {
         $this->seedInitialCurrencies();
-        $this->currencyService->updateCurrencies();
+        $currencyService->updateCurrencies();
     }
 
     public function seedInitialCurrencies(): void
     {
-        foreach ($this->currencyService->getInitialRates() as $currency) {
+        foreach ($this->getInitialRates() as $currency) {
             Currency::updateOrCreate(['code' => $currency['code']], $currency);
         }
+    }
+
+    public function getInitialRates(): array
+    {
+        return [
+            ['code' => 'USD', 'symbol' => '$', 'rate' => 1, 'is_default' => true],
+            ['code' => 'EUR', 'symbol' => '€', 'rate' => 0.85],
+            ['code' => 'SAR', 'symbol' => 'SAR', 'rate' => 3.75],
+            ['code' => 'TRY', 'symbol' => '₺', 'rate' => 41.35],
+            ['code' => 'SYP', 'symbol' => 'SYP', 'rate' => 11.30],
+        ];
     }
 }

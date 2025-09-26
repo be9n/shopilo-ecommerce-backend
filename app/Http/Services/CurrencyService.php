@@ -8,16 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 class CurrencyService
 {
-    public function getInitialRates(): array
-    {
-        return [
-            ['code' => 'USD', 'symbol' => '$', 'rate' => 1, 'is_default' => true],
-            ['code' => 'EUR', 'symbol' => '€', 'rate' => 0.85],
-            ['code' => 'SAR', 'symbol' => 'SAR', 'rate' => 3.75],
-            ['code' => 'TRY', 'symbol' => '₺', 'rate' => 41.35],
-            ['code' => 'SYP', 'symbol' => 'SYP', 'rate' => 11.30],
-        ];
-    }
 
     public function updateCurrencies(): void
     {
