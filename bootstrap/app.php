@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/customer_api.php'));
         }
     )->withBroadcasting(
-        __DIR__.'/../routes/channels.php',
+        __DIR__ . '/../routes/channels.php',
         ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum']],
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -48,6 +48,10 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable|Exception $exception) {
+            if (!request()->is('api/*')) {
+                return;
+            }
+            
             if ($exception instanceof RegularException) {
                 return response()->json(
                     [

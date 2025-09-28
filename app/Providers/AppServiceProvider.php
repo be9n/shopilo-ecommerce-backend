@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -26,6 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        TranslatableTabs::configureUsing(function (TranslatableTabs $component) {
+            $component
+                ->addEmptyBadgeWhenAllFieldsAreEmpty(__('Empty'))
+                ->localesLabels([
+                    'ar' => __('locales.ar'),
+                    'en' => __('locales.en')
+                ])
+                ->locales(['ar', 'en']);
+        });
 
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
